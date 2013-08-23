@@ -46,4 +46,10 @@ public class MoneyTest {
     public void is_not_equal_to_null() {
         assertThat(new Money("USD", "100"), is(not(equalTo(null))));
     }
+
+    @Test
+    public void adds_to_another_of_same_currency() {
+        assertThat(new Money("USD", "100").plus(new Money("USD", "200")),
+                is(equalTo(new Money("USD", "300"))));
+    }
 }

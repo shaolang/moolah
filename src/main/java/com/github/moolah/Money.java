@@ -27,6 +27,10 @@ public class Money {
         this(Currency.getInstance(currency), new BigDecimal(amount));
     }
 
+    public Money plus(Money that) {
+        return new Money(currency, amount.add(that.amount));
+    }
+
     public boolean equals(Object other) {
         if (other == null) return false;
 
