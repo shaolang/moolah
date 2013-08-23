@@ -32,24 +32,25 @@ public class MoneyTest {
 
     @Test
     public void adheres_to_hashcode_contract_for_equal_money() {
-        assertThat(new Money("USD", "1").hashCode(),
-                is(equalTo(new Money("USD", "1").hashCode())));
+        assertThat(usd("1").hashCode(), is(equalTo(usd("1").hashCode())));
     }
 
     @Test
     public void is_not_equal_to_another_when_currency_is_different() {
-        assertThat(new Money("USD", "100"),
-                is(not(equalTo(new Money("EUR", "100")))));
+        assertThat(usd("100"), is(not(equalTo(new Money("AUD", "100")))));
     }
 
     @Test
     public void is_not_equal_to_null() {
-        assertThat(new Money("USD", "100"), is(not(equalTo(null))));
+        assertThat(usd("100"), is(not(equalTo(null))));
     }
 
     @Test
     public void adds_to_another_of_same_currency() {
-        assertThat(new Money("USD", "100").plus(new Money("USD", "200")),
-                is(equalTo(new Money("USD", "300"))));
+        assertThat(usd("100").plus(usd("200")), is(equalTo(usd("300"))));
+    }
+
+    private Money usd(String amount) {
+        return new Money("USD", amount);
     }
 }
