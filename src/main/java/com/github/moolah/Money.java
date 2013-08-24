@@ -36,8 +36,15 @@ public class Money {
     }
 
     public Money convertTo(Currency toCurrency, MoneyChanger changer) {
-        BigDecimal rate = changer.getSellRate(currency, toCurrency);
+        BigDecimal rate = isAmountPositive()
+            ? changer.getSellRate(currency, toCurrency)
+            : changer.getBuyRate(currency, toCurrency);
+
         return new Money(toCurrency, amount.multiply(rate));
+    }
+
+    private boolean isAmountPositive() {
+        return amount.compareTo(BigDecimal.ZERO) >= 0;
     }
 
     public Money plus(Money... more) {

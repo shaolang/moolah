@@ -17,8 +17,9 @@ package com.github.moolah;
 import java.math.BigDecimal;
 import java.util.Currency;
 import org.jmock.Expectations;
-import org.jmock.Mockery;
+import org.jmock.integration.junit4.JUnit4Mockery;
 import org.jmock.integration.junit4.JUnitRuleMockery;
+import org.jmock.lib.concurrent.Synchroniser;
 import org.junit.Rule;
 import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -37,6 +38,17 @@ public class MoneyConversionTest {
                 is(equalTo(new Money(SGD, "127.87"))));
     }
 
+    @Test
+    public void uses_buy_rates_when_from_amount_is_negative() {
+        context.checking(new Expectations() {{
+            allowing(mockChanger).getBuyRate(USD, SGD);
+            will(returnValue(bigdec("1.2792")));
+        }});
+
+        assertThat(new Money(USD, "-100").convertTo(SGD, mockChanger),
+                is(equalTo(new Money(SGD, "-127.92"))));
+    }
+
     private BigDecimal bigdec(String amount) {
         return new BigDecimal(amount);
     }
@@ -46,6 +58,8 @@ public class MoneyConversionTest {
 
     @Rule
     public JUnitRuleMockery junitRuleMockery = new JUnitRuleMockery();
-    private Mockery context = new Mockery();
+    private JUnit4Mockery context = new JUnit4Mockery() {{
+        setThreadingPolicy(new Synchroniser());
+    }};
     private MoneyChanger mockChanger = context.mock(MoneyChanger.class);
 }
