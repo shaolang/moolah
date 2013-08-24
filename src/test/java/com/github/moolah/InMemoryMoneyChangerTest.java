@@ -39,10 +39,16 @@ public class InMemoryMoneyChangerTest {
         assertThat(moneyChanger.getBuyRate(USD, SGD), is(equalTo(USDSGD_ASK)));
     }
 
-    @Ignore
+    @Ignore("need to implement means of inversing the rate")
     @Test
-    public void getSellRate_returns_ask_when_currency_pair_is_inversed() {
+    public void getSellRate_returns_invesrse_ask_when_currency_pair_is_inversed() {
         assertThat(moneyChanger.getSellRate(SGD, USD), is(equalTo(USDSGD_ASK)));
+    }
+
+    @Ignore("need to implement means of inversing the rate")
+    @Test
+    public void getBuyRate_returns__inverse_bid_when_currency_pair_is_inversed() {
+        assertThat(moneyChanger.getBuyRate(SGD, USD), is(equalTo(USDSGD_BID)));
     }
 
     private final static Currency USD = Currency.getInstance("USD");

@@ -20,12 +20,23 @@ import java.util.HashMap;
 
 public class InMemoryMoneyChanger implements MoneyChanger {
     public BigDecimal getBuyRate(Currency from, Currency to) {
-        return askRates.get(CurrencyPair.getInstance(from, to));
+        return getRate(from, to, askRates, bidRates);
     }
 
     public BigDecimal getSellRate(Currency from, Currency to) {
-        return bidRates.get(CurrencyPair.getInstance(from, to));
+        return getRate(from, to, bidRates, askRates);
     }
+
+    private BigDecimal getRate(Currency from, Currency to,
+            HashMap<CurrencyPair, BigDecimal> rates1,
+            HashMap<CurrencyPair, BigDecimal> rates2) {
+        CurrencyPair pair = CurrencyPair.getInstance(from, to);
+
+        return rates1.containsKey(pair)
+            ? rates1.get(pair)
+            : rates2.get(pair.inverse());
+    }
+
 
     public void setFXRate(Currency from, Currency to, BigDecimal bid,
             BigDecimal ask) {
