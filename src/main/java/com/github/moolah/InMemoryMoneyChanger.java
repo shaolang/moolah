@@ -20,30 +20,21 @@ import java.util.HashMap;
 
 public class InMemoryMoneyChanger implements MoneyChanger {
     public BigDecimal getBuyRate(Currency from, Currency to) {
-        return askRates.get(from).get(to);
+        return askRates.get(CurrencyPair.getInstance(from, to));
     }
 
     public BigDecimal getSellRate(Currency from, Currency to) {
-        return bidRates.get(from).get(to);
+        return bidRates.get(CurrencyPair.getInstance(from, to));
     }
 
     public void setFXRate(Currency from, Currency to, BigDecimal bid,
             BigDecimal ask) {
-        putFXRate(from, to, bid, bidRates);
-        putFXRate(from, to, ask, askRates);
+        bidRates.put(CurrencyPair.getInstance(from, to), bid);
+        askRates.put(CurrencyPair.getInstance(from, to), ask);
     }
 
-    private void putFXRate(Currency from, Currency to, BigDecimal rate,
-            HashMap<Currency, HashMap<Currency, BigDecimal>> ratesMap) {
-        if (!ratesMap.containsKey(from)) {
-            ratesMap.put(from, new HashMap<Currency, BigDecimal>());
-        }
-
-        ratesMap.get(from).put(to, rate);
-    }
-
-    private final HashMap<Currency, HashMap<Currency, BigDecimal>>
-        bidRates = new HashMap<Currency, HashMap<Currency, BigDecimal>>();
-    private final HashMap<Currency, HashMap<Currency, BigDecimal>>
-        askRates = new HashMap<Currency, HashMap<Currency, BigDecimal>>();
+    private final HashMap<CurrencyPair, BigDecimal> bidRates =
+        new HashMap<CurrencyPair, BigDecimal>();
+    private final HashMap<CurrencyPair, BigDecimal> askRates =
+        new HashMap<CurrencyPair, BigDecimal>();
 }
