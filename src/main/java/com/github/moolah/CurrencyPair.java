@@ -15,6 +15,7 @@
 package com.github.moolah;
 
 import java.util.Currency;
+import java.util.HashMap;
 
 public class CurrencyPair {
     public static CurrencyPair getInstance(Currency base, Currency quote) {
@@ -26,7 +27,23 @@ public class CurrencyPair {
             throw new IllegalArgumentException("Quote currency cannot be null!");
         }
 
-        return new CurrencyPair(base, quote);
+        addBaseIfNotFound(base);
+        addQuoteIfNotFound(base, quote);
+
+        return currencyPairs.get(base).get(quote);
+    }
+
+    private static void addBaseIfNotFound(Currency base) {
+        if (!currencyPairs.containsKey(base)) {
+            currencyPairs.put(base, new HashMap<Currency, CurrencyPair>());
+        }
+    }
+
+    private static void addQuoteIfNotFound(Currency base, Currency quote) {
+        if (!currencyPairs.get(base).containsKey(quote)) {
+            currencyPairs.get(base)
+                .put(quote, new CurrencyPair(base, quote));
+        }
     }
 
     public CurrencyPair inverse() {
@@ -51,6 +68,9 @@ public class CurrencyPair {
         this.base = base;
         this.quote = quote;
     }
+
+    private final static HashMap<Currency, HashMap<Currency, CurrencyPair>>
+        currencyPairs = new HashMap<Currency, HashMap<Currency, CurrencyPair>>();
 
     private final Currency base;
     private final Currency quote;
