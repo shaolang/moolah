@@ -23,12 +23,25 @@ public class Money {
         this.amount = amount.setScale(currency.getDefaultFractionDigits());
     }
 
+    public Money(Currency currency, String amount) {
+        this(currency, new BigDecimal(amount));
+    }
+
     public Money(String currency, String amount) {
         this(Currency.getInstance(currency), new BigDecimal(amount));
     }
 
-    public Money plus(Money that) {
-        return new Money(currency, amount.add(that.amount));
+    public Money(String currency, int amount) {
+        this(Currency.getInstance(currency), new BigDecimal(amount));
+    }
+
+    public Money plus(Money that, Money... more) {
+        double total = amount.doubleValue() + that.amount.doubleValue();
+
+        for (Money m: more) {
+            total += m.amount.doubleValue();
+        }
+        return new Money(currency, "" + total);
     }
 
     public boolean equals(Object other) {

@@ -1,5 +1,8 @@
 apply plugin: 'java'
 
+sourceCompatibility = 1.5
+version = '0.1.0-SNAPSHOT'
+
 defaultTasks 'test'
 
 dependencies {
