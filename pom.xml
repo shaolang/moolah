@@ -24,6 +24,22 @@
   <scm>
     <url>https://github.com/shaolang/moolah</url>
   </scm>
+  <issueManagement>
+    <url>https://github.com/shaolang/moolah/issues</url>
+  </issueManagement>
+
+  <developers>
+    <developer>
+      <id>shaolang</id>
+      <name>Shaolang Ai</name>
+      <url>https://github.com/shaolang</url>
+      <timezone>+8</timezone>
+      <roles>
+        <role>Project Founder</role>
+        <role>Developer</role>
+      </roles>
+    </developer>
+  </developers>
 
   <dependencies>
     <dependency>
