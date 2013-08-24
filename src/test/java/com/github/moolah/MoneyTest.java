@@ -50,6 +50,21 @@ public class MoneyTest {
         assertThat(usd(100).plus(usd(10), usd(1)), is(equalTo(usd(111))));
     }
 
+    @Test(expected=CurrencyMismatchException.class)
+    public void throws_exception_when_trying_to_sum_monies_of_different_currency() {
+        usd(100).plus(new Money("EUR", 100));
+    }
+
+    @Test
+    public void plus_returns_itself_when_given_a_null() {
+        assertThat(usd(200).plus(null), is(equalTo(usd(200))));
+    }
+
+    @Test
+    public void plus_ignore_nulls() {
+        assertThat(usd(100).plus(usd(10), null, usd(1)), is(equalTo(usd(111))));
+    }
+
     private Money usd(int amount) {
         return new Money("USD", amount);
     }

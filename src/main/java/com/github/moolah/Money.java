@@ -35,12 +35,21 @@ public class Money {
         this(Currency.getInstance(currency), new BigDecimal(amount));
     }
 
-    public Money plus(Money that, Money... more) {
-        double total = amount.doubleValue() + that.amount.doubleValue();
+    public Money plus(Money... more) {
+        if (more == null) return this;
+
+        double total = amount.doubleValue();
 
         for (Money m: more) {
-            total += m.amount.doubleValue();
+            if (m!= null) {
+                if (!currency.equals(m.currency)) {
+                    throw new CurrencyMismatchException();
+                }
+
+                total += m.amount.doubleValue();
+            }
         }
+
         return new Money(currency, "" + total);
     }
 
