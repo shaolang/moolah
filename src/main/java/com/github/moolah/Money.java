@@ -35,6 +35,11 @@ public class Money {
         this(Currency.getInstance(currency), new BigDecimal(amount));
     }
 
+    public Money convertTo(Currency toCurrency, MoneyChanger changer) {
+        BigDecimal rate = changer.getSellRate(currency, toCurrency);
+        return new Money(toCurrency, amount.multiply(rate));
+    }
+
     public Money plus(Money... more) {
         if (more == null) return this;
 
