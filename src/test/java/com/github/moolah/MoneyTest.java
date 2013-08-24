@@ -16,10 +16,6 @@ package com.github.moolah;
 
 import java.math.BigDecimal;
 import java.util.Currency;
-import org.jmock.Expectations;
-import org.jmock.Mockery;
-import org.jmock.integration.junit4.JUnitRuleMockery;
-import org.junit.Rule;
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -74,33 +70,10 @@ public class MoneyTest {
     }
 
     /*
-     * convertTo() tests
-     */
-
-    @Test
-    public void convert_to_another_currency_when_rate_is_known() {
-        final MoneyChanger mockChanger = context.mock(MoneyChanger.class);
-        final Currency SGD = Currency.getInstance("SGD");
-
-        context.checking(new Expectations() {{
-            allowing(mockChanger).getSellRate(USD, SGD);
-            will(returnValue(new BigDecimal("1.2787")));
-        }});
-
-        assertThat(usd(100).convertTo(SGD, mockChanger),
-                is(equalTo(new Money(SGD, "127.87"))));
-    }
-
-    /*
      * helper function
      */
 
     private Money usd(int amount) {
         return new Money("USD", amount);
     }
-
-    @Rule
-    public JUnitRuleMockery junitRuleMockery = new JUnitRuleMockery();
-    private Mockery context = new Mockery();
-    private Currency USD = Currency.getInstance("USD");
 }
