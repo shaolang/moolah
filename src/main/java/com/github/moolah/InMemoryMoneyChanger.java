@@ -15,6 +15,8 @@
 package com.github.moolah;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Currency;
 import java.util.HashMap;
 
@@ -27,6 +29,7 @@ public class InMemoryMoneyChanger implements MoneyChanger {
         return getRate(from, to, bidRates, askRates);
     }
 
+
     private BigDecimal getRate(Currency from, Currency to,
             HashMap<CurrencyPair, BigDecimal> rates1,
             HashMap<CurrencyPair, BigDecimal> rates2) {
@@ -34,9 +37,9 @@ public class InMemoryMoneyChanger implements MoneyChanger {
 
         return rates1.containsKey(pair)
             ? rates1.get(pair)
-            : rates2.get(pair.inverse());
+            : new BigDecimal(1 / rates2.get(pair.inverse()).doubleValue(),
+                    inversePairMathContexts.get(pair));
     }
-
 
     public void setFXRate(Currency from, Currency to, BigDecimal bid,
             BigDecimal ask) {
@@ -44,8 +47,16 @@ public class InMemoryMoneyChanger implements MoneyChanger {
         askRates.put(CurrencyPair.getInstance(from, to), ask);
     }
 
+    public void setInverseRateFractionDigits(CurrencyPair pair,
+            int fractionDigits) {
+        inversePairMathContexts.put(pair.inverse(),
+                new MathContext(fractionDigits, RoundingMode.HALF_UP));
+    }
+
     private final HashMap<CurrencyPair, BigDecimal> bidRates =
         new HashMap<CurrencyPair, BigDecimal>();
     private final HashMap<CurrencyPair, BigDecimal> askRates =
         new HashMap<CurrencyPair, BigDecimal>();
+    private final HashMap<CurrencyPair, MathContext> inversePairMathContexts =
+        new HashMap<CurrencyPair, MathContext>();
 }

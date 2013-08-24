@@ -26,6 +26,9 @@ import static org.junit.Assert.assertThat;
 public class InMemoryMoneyChangerTest {
     @Before
     public void setupFXRates() {
+        CurrencyPair usdsgd = CurrencyPair.getInstance(USD, SGD);
+
+        moneyChanger.setInverseRateFractionDigits(usdsgd, 4);
         moneyChanger.setFXRate(USD, SGD, USDSGD_BID, USDSGD_ASK);
     }
 
@@ -39,16 +42,16 @@ public class InMemoryMoneyChangerTest {
         assertThat(moneyChanger.getBuyRate(USD, SGD), is(equalTo(USDSGD_ASK)));
     }
 
-    @Ignore("need to implement means of inversing the rate")
     @Test
-    public void getSellRate_returns_invesrse_ask_when_currency_pair_is_inversed() {
-        assertThat(moneyChanger.getSellRate(SGD, USD), is(equalTo(USDSGD_ASK)));
+    public void getSellRate_returns_inversed_ask_when_currency_pair_is_inversed() {
+        assertThat(moneyChanger.getSellRate(SGD, USD),
+                is(equalTo(new BigDecimal("0.7817"))));
     }
 
-    @Ignore("need to implement means of inversing the rate")
     @Test
     public void getBuyRate_returns__inverse_bid_when_currency_pair_is_inversed() {
-        assertThat(moneyChanger.getBuyRate(SGD, USD), is(equalTo(USDSGD_BID)));
+        assertThat(moneyChanger.getBuyRate(SGD, USD),
+                is(equalTo(new BigDecimal("0.7820"))));
     }
 
     private final static Currency USD = Currency.getInstance("USD");
