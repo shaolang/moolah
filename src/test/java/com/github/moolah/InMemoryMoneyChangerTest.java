@@ -17,6 +17,7 @@ package com.github.moolah;
 import java.math.BigDecimal;
 import java.util.Currency;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -36,6 +37,12 @@ public class InMemoryMoneyChangerTest {
     @Test
     public void getBuyRate_returns_ask_when_currency_pair_is_found() {
         assertThat(moneyChanger.getBuyRate(USD, SGD), is(equalTo(USDSGD_ASK)));
+    }
+
+    @Ignore
+    @Test
+    public void getSellRate_returns_ask_when_currency_pair_is_inversed() {
+        assertThat(moneyChanger.getSellRate(SGD, USD), is(equalTo(USDSGD_ASK)));
     }
 
     private final static Currency USD = Currency.getInstance("USD");
