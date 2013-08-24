@@ -46,11 +46,6 @@ public class MoneyTest {
     }
 
     @Test
-    public void adds_to_another_of_same_currency() {
-        assertThat(usd(100).plus(usd(200)), is(equalTo(usd(300))));
-    }
-
-    @Test
     public void allows_summing_monies_with_the_same_currency() {
         assertThat(usd(100).plus(usd(10), usd(1)), is(equalTo(usd(111))));
     }
