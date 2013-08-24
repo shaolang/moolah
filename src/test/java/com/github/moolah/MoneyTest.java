@@ -45,6 +45,10 @@ public class MoneyTest {
         assertThat(usd(100), is(not(equalTo(null))));
     }
 
+    /*
+     * plus() tests
+     */
+
     @Test
     public void allows_summing_monies_with_the_same_currency() {
         assertThat(usd(100).plus(usd(10), usd(1)), is(equalTo(usd(111))));
@@ -64,6 +68,10 @@ public class MoneyTest {
     public void plus_ignore_nulls() {
         assertThat(usd(100).plus(usd(10), null, usd(1)), is(equalTo(usd(111))));
     }
+
+    /*
+     * helper function
+     */
 
     private Money usd(int amount) {
         return new Money("USD", amount);
