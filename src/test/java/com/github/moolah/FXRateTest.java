@@ -44,7 +44,7 @@ public class FXRateTest {
                 USDSGD_BID, USDSGD_ASK, USDSGD_UNIT);
 
         assertThat(new FXRate(USDSGD, USDSGD_BID, USDSGD_ASK, USDSGD_UNIT),
-                adheresToValueObjectContract(different, same));
+                adheresToValueObjectContract(same, different));
     }
 
     private final static CurrencyPair USDSGD =
