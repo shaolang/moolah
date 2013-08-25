@@ -19,23 +19,20 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static com.github.moolah.ValueObjectContractMatcher.adheresToValueObjectContract;
+import static com.github.moolah.TestUtils.bigdec;
+import static com.github.moolah.TestUtils.pair;
+import static com.github.moolah.TestUtils.adheresToValueObjectContract;
 
 public class FXRateTest {
     @Test
     public void adheres_to_value_object_contract() {
-        FXRate same = new FXRate(USDSGD, USDSGD_BID, USDSGD_ASK,
-                USDSGD_UNIT);
-        FXRate different = new FXRate(CurrencyPair.getInstance("EUR", "JPY"),
-                USDSGD_BID, USDSGD_ASK, USDSGD_UNIT);
+        FXRate same = new FXRate(pair("JPY", "SGD"), bigdec("1.2900"),
+                bigdec("1.3000"), 100);
+        FXRate different = new FXRate(pair("EUR", "JPY"), bigdec("1"),
+                bigdec("1"), 1);
 
-        assertThat(new FXRate(USDSGD, USDSGD_BID, USDSGD_ASK, USDSGD_UNIT),
+        assertThat(new FXRate(pair("JPY", "SGD"), bigdec("1.2900"),
+                    bigdec("1.3000"), 100),
                 adheresToValueObjectContract(same, different));
     }
-
-    private final static CurrencyPair USDSGD =
-        CurrencyPair.getInstance("USD", "SGD");
-    private final static BigDecimal USDSGD_BID = new BigDecimal("1.2787");
-    private final static BigDecimal USDSGD_ASK = new BigDecimal("1.2792");
-    private final static int USDSGD_UNIT = 1;
 }

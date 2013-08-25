@@ -21,7 +21,7 @@ import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
-import static com.github.moolah.ValueObjectContractMatcher.adheresToValueObjectContract;
+import static com.github.moolah.TestUtils.adheresToValueObjectContract;
 
 public class MoneyTest {
     @Test

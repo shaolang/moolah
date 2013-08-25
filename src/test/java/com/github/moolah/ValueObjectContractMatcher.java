@@ -18,11 +18,6 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
 public class ValueObjectContractMatcher<T> extends BaseMatcher<T> {
-    public static <T> ValueObjectContractMatcher<T> adheresToValueObjectContract(
-            T identicalInstance, T differentInstance) {
-        return new ValueObjectContractMatcher(identicalInstance, differentInstance);
-    }
-
     public ValueObjectContractMatcher(T identicalInstance, T differentInstance) {
         this.same = identicalInstance;
         this.different = differentInstance;
