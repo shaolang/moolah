@@ -19,6 +19,7 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static com.github.moolah.ValueObjectContractMatcher.adheresToValueObjectContract;
 
 public class FXRateTest {
     @Test
@@ -33,6 +34,17 @@ public class FXRateTest {
         assertThat(new FXRate(USDSGD, USDSGD_BID, USDSGD_ASK, USDSGD_UNIT).hashCode(),
                 is(equalTo(new FXRate(USDSGD, USDSGD_BID, USDSGD_ASK,
                             USDSGD_UNIT).hashCode())));
+    }
+
+    @Test
+    public void adheres_to_value_object_contract() {
+        FXRate same = new FXRate(USDSGD, USDSGD_BID, USDSGD_ASK,
+                USDSGD_UNIT);
+        FXRate different = new FXRate(CurrencyPair.getInstance("EUR", "JPY"),
+                USDSGD_BID, USDSGD_ASK, USDSGD_UNIT);
+
+        assertThat(new FXRate(USDSGD, USDSGD_BID, USDSGD_ASK, USDSGD_UNIT),
+                adheresToValueObjectContract(different, same));
     }
 
     private final static CurrencyPair USDSGD =
