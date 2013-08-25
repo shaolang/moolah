@@ -19,6 +19,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class CurrencyPair {
+    public static CurrencyPair getInstance(String base, String quote) {
+        return getInstance(Currency.getInstance(base),
+                Currency.getInstance(quote));
+    }
+
     public static CurrencyPair getInstance(Currency base, Currency quote) {
         if (base == null) {
             throw new IllegalArgumentException("Base currency cannot be null!");
@@ -63,6 +68,10 @@ public final class CurrencyPair {
         result = 19 * result + quote.hashCode();
 
         return result;
+    }
+
+    public String toString() {
+        return base.toString() + "/" + quote.toString();
     }
 
     private CurrencyPair(Currency base, Currency quote) {
