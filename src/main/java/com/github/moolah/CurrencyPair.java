@@ -57,6 +57,9 @@ public final class CurrencyPair {
     }
 
     public boolean equals(Object other) {
+        if (other == null) return false;
+        if (!(other instanceof CurrencyPair)) return false;
+
         CurrencyPair that = (CurrencyPair) other;
 
         return base.equals(that.base) && quote.equals(that.quote);

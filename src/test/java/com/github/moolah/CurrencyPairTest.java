@@ -19,18 +19,15 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static com.github.moolah.ValueObjectContractMatcher.adheresToValueObjectContract;
 
 public class CurrencyPairTest {
     @Test
-    public void is_equals_to_another_instance_with_same_currencies() {
+    public void adheres_to_value_object_contract() {
         assertThat(CurrencyPair.getInstance(USD, SGD),
-                is(equalTo(CurrencyPair.getInstance(USD, SGD))));
-    }
-
-    @Test
-    public void adheres_to_hashcode_contract_for_equal_currency_pair() {
-        assertThat(CurrencyPair.getInstance(USD, SGD).hashCode(),
-                is(equalTo(CurrencyPair.getInstance(USD, SGD).hashCode())));
+                adheresToValueObjectContract(
+                    CurrencyPair.getInstance("USD", "SGD"),
+                    CurrencyPair.getInstance(SGD, USD)));
     }
 
     /*

@@ -67,6 +67,7 @@ public class Money {
 
     public boolean equals(Object other) {
         if (other == null) return false;
+        if (!(other instanceof Money)) return false;
 
         Money that = (Money) other;
         return this.currency.equals(that.currency) &&

@@ -23,20 +23,6 @@ import static com.github.moolah.ValueObjectContractMatcher.adheresToValueObjectC
 
 public class FXRateTest {
     @Test
-    public void is_equal_to_another_with_same_properties() {
-        assertThat(new FXRate(USDSGD, USDSGD_BID, USDSGD_ASK, USDSGD_UNIT),
-                is(equalTo(new FXRate(USDSGD, USDSGD_BID, USDSGD_ASK,
-                            USDSGD_UNIT))));
-    }
-
-    @Test
-    public void adheres_to_hashcode_contract_of_equal_objects() {
-        assertThat(new FXRate(USDSGD, USDSGD_BID, USDSGD_ASK, USDSGD_UNIT).hashCode(),
-                is(equalTo(new FXRate(USDSGD, USDSGD_BID, USDSGD_ASK,
-                            USDSGD_UNIT).hashCode())));
-    }
-
-    @Test
     public void adheres_to_value_object_contract() {
         FXRate same = new FXRate(USDSGD, USDSGD_BID, USDSGD_ASK,
                 USDSGD_UNIT);

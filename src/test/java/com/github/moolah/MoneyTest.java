@@ -21,28 +21,14 @@ import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static com.github.moolah.ValueObjectContractMatcher.adheresToValueObjectContract;
 
 public class MoneyTest {
     @Test
-    public void is_equal_to_another_when_currency_and_amount_tallies() {
+    public void adheres_to_value_object_contract() {
         assertThat(new Money("USD", "100"),
-                is(equalTo(new Money(Currency.getInstance("USD"),
-                            new BigDecimal("100.00")))));
-    }
-
-    @Test
-    public void adheres_to_hashcode_contract_for_equal_money() {
-        assertThat(usd(1).hashCode(), is(equalTo(usd(1).hashCode())));
-    }
-
-    @Test
-    public void is_not_equal_to_another_when_currency_is_different() {
-        assertThat(usd(100), is(not(equalTo(new Money("AUD", 100)))));
-    }
-
-    @Test
-    public void is_not_equal_to_null() {
-        assertThat(usd(100), is(not(equalTo(null))));
+                adheresToValueObjectContract(new Money("USD", 100),
+                    new Money("SGD", "100")));
     }
 
     /*

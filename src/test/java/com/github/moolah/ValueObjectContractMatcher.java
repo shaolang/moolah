@@ -29,22 +29,37 @@ public class ValueObjectContractMatcher<T> extends BaseMatcher<T> {
     }
 
     public boolean matches(Object actual) {
+        notEqualsNull = !actual.equals(null);
+        notEqualsArbitraryObject = !actual.equals(new Object());
         equalsSame = same.equals(actual);
+        reflexiveEqualsSame = actual.equals(same);
+        notReflexiveEqualsDifferent = !actual.equals(different);
         notEqualsDifferent = !different.equals(actual);
         equalsSameHashCode = same.hashCode() == actual.hashCode();
         notEqualsDifferentHashCode = different.hashCode() != actual.hashCode();
 
-        return equalsSame && notEqualsDifferent
+        return notEqualsNull && notEqualsArbitraryObject
+            && equalsSame && notEqualsDifferent
+            && reflexiveEqualsSame && notReflexiveEqualsDifferent
             && equalsSameHashCode && notEqualsDifferentHashCode;
     }
 
     public void describeMismatch(Object actual, Description description) {
-        if (!equalsSame) {
+        if (!notEqualsNull) {
+            description.appendText("should not be equal to null ");
+        } else if (!notEqualsArbitraryObject) {
+            description.appendText(
+                    "should not be equal to any arbitrary object");
+        } else if (!equalsSame) {
             description.appendText("to be equal to ")
                 .appendValue(same);
         } else if (!notEqualsDifferent) {
             description.appendText("not to be equal to ")
                 .appendValue(different);
+        } else if (!reflexiveEqualsSame) {
+            description.appendText("should reflexively be equal to ");
+        } else if (!notReflexiveEqualsDifferent) {
+            description.appendText("should not reflexively be equal to ");
         } else if (!equalsSameHashCode) {
             description.appendText("to have the same hash code as ")
                 .appendValue(same);
@@ -55,17 +70,23 @@ public class ValueObjectContractMatcher<T> extends BaseMatcher<T> {
     }
 
     public void describeTo(Description description) {
-        if (!equalsSame || !equalsSameHashCode) {
+        if (!equalsSame || !equalsSameHashCode || !notEqualsNull
+                || !reflexiveEqualsSame) {
             description.appendValue(same);
-        } else {
+        } else if (!notEqualsDifferent || !notEqualsDifferentHashCode
+                || !notReflexiveEqualsDifferent) {
             description.appendValue(different);
         }
     }
 
     private final T same;
     private final T different;
+    private boolean notEqualsNull = false;
+    private boolean notEqualsArbitraryObject = false;
     private boolean equalsSame = false;
     private boolean notEqualsDifferent = false;
+    private boolean reflexiveEqualsSame = false;
+    private boolean notReflexiveEqualsDifferent = false;
     private boolean equalsSameHashCode = false;
     private boolean notEqualsDifferentHashCode = false;
 }

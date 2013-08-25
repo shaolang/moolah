@@ -26,6 +26,9 @@ public class FXRate {
     }
 
     public boolean equals(Object other) {
+        if (other == null) return false;
+        if (!(other instanceof FXRate)) return false;
+
         FXRate that = (FXRate) other;
 
         return currencyPair.equals(that.currencyPair)
