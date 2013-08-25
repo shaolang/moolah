@@ -19,6 +19,7 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.Currency;
 import java.util.HashMap;
+import java.util.Map;
 
 public class InMemoryMoneyChanger implements MoneyChanger {
     public BigDecimal getBuyRate(Currency from, Currency to) {
@@ -31,8 +32,8 @@ public class InMemoryMoneyChanger implements MoneyChanger {
 
 
     private BigDecimal getRate(Currency from, Currency to,
-            HashMap<CurrencyPair, BigDecimal> rates1,
-            HashMap<CurrencyPair, BigDecimal> rates2) {
+            Map<CurrencyPair, BigDecimal> rates1,
+            Map<CurrencyPair, BigDecimal> rates2) {
         CurrencyPair pair = CurrencyPair.getInstance(from, to);
 
         return rates1.containsKey(pair)
@@ -53,10 +54,10 @@ public class InMemoryMoneyChanger implements MoneyChanger {
                 new MathContext(fractionDigits, RoundingMode.HALF_UP));
     }
 
-    private final HashMap<CurrencyPair, BigDecimal> bidRates =
+    private final Map<CurrencyPair, BigDecimal> bidRates =
         new HashMap<CurrencyPair, BigDecimal>();
-    private final HashMap<CurrencyPair, BigDecimal> askRates =
+    private final Map<CurrencyPair, BigDecimal> askRates =
         new HashMap<CurrencyPair, BigDecimal>();
-    private final HashMap<CurrencyPair, MathContext> inversePairMathContexts =
+    private final Map<CurrencyPair, MathContext> inversePairMathContexts =
         new HashMap<CurrencyPair, MathContext>();
 }

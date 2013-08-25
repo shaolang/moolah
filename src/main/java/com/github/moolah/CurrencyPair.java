@@ -16,8 +16,9 @@ package com.github.moolah;
 
 import java.util.Currency;
 import java.util.HashMap;
+import java.util.Map;
 
-public class CurrencyPair {
+public final class CurrencyPair {
     public static CurrencyPair getInstance(Currency base, Currency quote) {
         if (base == null) {
             throw new IllegalArgumentException("Base currency cannot be null!");
@@ -30,18 +31,18 @@ public class CurrencyPair {
         addBaseIfNotFound(base);
         addQuoteIfNotFound(base, quote);
 
-        return currencyPairs.get(base).get(quote);
+        return CURRENCY_PAIRS.get(base).get(quote);
     }
 
     private static void addBaseIfNotFound(Currency base) {
-        if (!currencyPairs.containsKey(base)) {
-            currencyPairs.put(base, new HashMap<Currency, CurrencyPair>());
+        if (!CURRENCY_PAIRS.containsKey(base)) {
+            CURRENCY_PAIRS.put(base, new HashMap<Currency, CurrencyPair>());
         }
     }
 
     private static void addQuoteIfNotFound(Currency base, Currency quote) {
-        if (!currencyPairs.get(base).containsKey(quote)) {
-            currencyPairs.get(base)
+        if (!CURRENCY_PAIRS.get(base).containsKey(quote)) {
+            CURRENCY_PAIRS.get(base)
                 .put(quote, new CurrencyPair(base, quote));
         }
     }
@@ -69,8 +70,8 @@ public class CurrencyPair {
         this.quote = quote;
     }
 
-    private final static HashMap<Currency, HashMap<Currency, CurrencyPair>>
-        currencyPairs = new HashMap<Currency, HashMap<Currency, CurrencyPair>>();
+    private final static Map<Currency, Map<Currency, CurrencyPair>>
+        CURRENCY_PAIRS = new HashMap<Currency, Map<Currency, CurrencyPair>>();
 
     private final Currency base;
     private final Currency quote;
