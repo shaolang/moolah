@@ -15,6 +15,7 @@
 package com.github.moolah;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 
 public class FXRate {
     public FXRate(CurrencyPair currencyPair, BigDecimal bidRate,
@@ -23,6 +24,13 @@ public class FXRate {
         this.bidRate = bidRate;
         this.askRate = askRate;
         this.unit = unit;
+    }
+
+    public FXRate inverse(CurrencyPairConfiguration pairConfig) {
+        return new FXRate(currencyPair.inverse(),
+                pairConfig.doubleToBigDecimal(unit / askRate.doubleValue()),
+                pairConfig.doubleToBigDecimal(unit / bidRate.doubleValue()),
+                pairConfig.getUnit());
     }
 
     public boolean equals(Object other) {

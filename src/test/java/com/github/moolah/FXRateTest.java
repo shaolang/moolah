@@ -15,6 +15,7 @@
 package com.github.moolah;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -36,4 +37,22 @@ public class FXRateTest {
                     bigdec("1.3000"), 100),
                 adheresToValueObjectContract(same, different));
     }
+
+    /*
+     * inverse()
+     */
+
+    @Test
+    public void inverse_rates_using_configured_math_context() {
+        pairConfig = new CurrencyPairConfiguration(RoundingMode.HALF_UP, 2, 1);
+
+        FXRate original = new FXRate(pair("JPY", "SGD"), bigdec("1.29"),
+                    bigdec("1.30"), 100);
+        FXRate expected = new FXRate(pair("SGD", "JPY"), bigdec("76.92"),
+                            bigdec("77.52"), 1);
+
+        assertThat(original.inverse(pairConfig), is(equalTo(expected)));
+    }
+
+    private CurrencyPairConfiguration pairConfig;
 }
