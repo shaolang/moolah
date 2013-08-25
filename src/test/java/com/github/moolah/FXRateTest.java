@@ -28,8 +28,9 @@ public class FXRateTest {
     public void adheres_to_value_object_contract() {
         FXRate same = new FXRate(pair("JPY", "SGD"), bigdec("1.2900"),
                 bigdec("1.3000"), 100);
-        FXRate different = new FXRate(pair("EUR", "JPY"), bigdec("1"),
-                bigdec("1"), 1);
+        // main differences lie in decimals.
+        FXRate different = new FXRate(pair("JPY", "SGD"), bigdec("1.29"),
+                bigdec("1.3"), 100);
 
         assertThat(new FXRate(pair("JPY", "SGD"), bigdec("1.2900"),
                     bigdec("1.3000"), 100),

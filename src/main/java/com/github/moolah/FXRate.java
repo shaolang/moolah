@@ -32,8 +32,8 @@ public class FXRate {
         FXRate that = (FXRate) other;
 
         return currencyPair.equals(that.currencyPair)
-            && bidRate.compareTo(that.bidRate) == 0
-            && askRate.compareTo(that.askRate) == 0
+            && bidRate.equals(that.bidRate)
+            && askRate.equals(that.askRate)
             && unit == that.unit;
     }
 
