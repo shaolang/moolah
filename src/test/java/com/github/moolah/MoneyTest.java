@@ -22,6 +22,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static com.github.moolah.TestUtils.adheresToValueObjectContract;
+import static com.github.moolah.TestUtils.sgd;
+import static com.github.moolah.TestUtils.usd;
 
 public class MoneyTest {
     @Test
@@ -37,29 +39,23 @@ public class MoneyTest {
 
     @Test
     public void allows_summing_monies_with_the_same_currency() {
-        assertThat(usd(100).plus(usd(10), usd(1)), is(equalTo(usd(111))));
+        assertThat(usd("100").plus(usd("10"), usd("1")),
+                is(equalTo(usd("111"))));
     }
 
     @Test(expected=CurrencyMismatchException.class)
     public void throws_exception_when_trying_to_sum_monies_of_different_currency() {
-        usd(100).plus(new Money("EUR", 100));
+        usd("100").plus(sgd("100"));
     }
 
     @Test
     public void plus_returns_itself_when_given_a_null() {
-        assertThat(usd(200).plus((Money[]) null), is(equalTo(usd(200))));
+        assertThat(usd("200").plus((Money[]) null), is(equalTo(usd("200"))));
     }
 
     @Test
     public void plus_ignore_nulls() {
-        assertThat(usd(100).plus(usd(10), null, usd(1)), is(equalTo(usd(111))));
-    }
-
-    /*
-     * helper function
-     */
-
-    private Money usd(int amount) {
-        return new Money("USD", amount);
+        assertThat(usd("100").plus(usd("10"), null, usd("1")),
+                is(equalTo(usd("111"))));
     }
 }
