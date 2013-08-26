@@ -27,14 +27,6 @@ public class InMemoryMoneyChanger implements MoneyChanger {
         this.currencyPairConfigs = configs;
     }
 
-    public BigDecimal getBuyRate(Currency from, Currency to) {
-        return getRate(from, to, askRates, bidRates);
-    }
-
-    public BigDecimal getSellRate(Currency from, Currency to) {
-        return getRate(from, to, bidRates, askRates);
-    }
-
     public FXRate getFXRate(CurrencyPair currencyPair) {
         return fxRates.containsKey(currencyPair)
             ? fxRates.get(currencyPair)
@@ -42,40 +34,11 @@ public class InMemoryMoneyChanger implements MoneyChanger {
                     .inverse(currencyPairConfigs.get(currencyPair.inverse()));
     }
 
-    private BigDecimal getRate(Currency from, Currency to,
-            Map<CurrencyPair, BigDecimal> rates1,
-            Map<CurrencyPair, BigDecimal> rates2) {
-        CurrencyPair pair = CurrencyPair.getInstance(from, to);
-
-        return rates1.containsKey(pair)
-            ? rates1.get(pair)
-            : new BigDecimal(1 / rates2.get(pair.inverse()).doubleValue(),
-                    inversePairMathContexts.get(pair));
-    }
-
-    public void setFXRate(Currency from, Currency to, BigDecimal bid,
-            BigDecimal ask) {
-        bidRates.put(CurrencyPair.getInstance(from, to), bid);
-        askRates.put(CurrencyPair.getInstance(from, to), ask);
-    }
-
     public void setFXRate(FXRate fxRate) {
         fxRates.put(fxRate.getCurrencyPair(), fxRate);
-    }
-
-    public void setInverseRateFractionDigits(CurrencyPair pair,
-            int fractionDigits) {
-        inversePairMathContexts.put(pair.inverse(),
-                new MathContext(fractionDigits, RoundingMode.HALF_UP));
     }
 
     private final Map<CurrencyPair, CurrencyPairConfiguration> currencyPairConfigs;
     private final Map<CurrencyPair, FXRate> fxRates =
         new HashMap<CurrencyPair, FXRate>();
-    private final Map<CurrencyPair, BigDecimal> bidRates =
-        new HashMap<CurrencyPair, BigDecimal>();
-    private final Map<CurrencyPair, BigDecimal> askRates =
-        new HashMap<CurrencyPair, BigDecimal>();
-    private final Map<CurrencyPair, MathContext> inversePairMathContexts =
-        new HashMap<CurrencyPair, MathContext>();
 }

@@ -30,49 +30,36 @@ import static com.github.moolah.TestUtils.pair;
 public class InMemoryMoneyChangerTest {
     @Before
     public void setupFXRates() {
-        CurrencyPairConfiguration config = new CurrencyPairConfiguration(
-                RoundingMode.HALF_UP, 4, 1);
         Map<CurrencyPair, CurrencyPairConfiguration> configs =
             new HashMap<CurrencyPair, CurrencyPairConfiguration>();
-        configs.put(pair("USD", "SGD"), config);
-        configs.put(pair("SGD", "USD"), config);
+        configs.put(pair("USD", "SGD"), USDSGD_CONFIG);
+        configs.put(pair("SGD", "USD"), USDSGD_CONFIG);
 
         moneyChanger = new InMemoryMoneyChanger(configs);
         CurrencyPair usdsgd = CurrencyPair.getInstance(USD, SGD);
 
-        moneyChanger.setInverseRateFractionDigits(usdsgd, 4);
-        moneyChanger.setFXRate(USD, SGD, USDSGD_BID, USDSGD_ASK);
-
-        moneyChanger.setFXRate(new FXRate(pair("USD", "SGD"), USDSGD_BID,
-                        USDSGD_ASK, 4));
+        moneyChanger.setFXRate(USDSGD_RATE);
     }
 
     @Test
-    public void getSellRate_returns_bid_when_currency_pair_is_found() {
-        assertThat(moneyChanger.getSellRate(USD, SGD), is(equalTo(USDSGD_BID)));
+    public void getFXRate_returns_the_rate_set() {
+        assertThat(moneyChanger.getFXRate(pair("USD", "SGD")),
+                is(equalTo(USDSGD_RATE)));
     }
 
     @Test
-    public void getBuyRate_returns_ask_when_currency_pair_is_found() {
-        assertThat(moneyChanger.getBuyRate(USD, SGD), is(equalTo(USDSGD_ASK)));
-    }
-
-    @Test
-    public void getSellRate_returns_inversed_ask_when_currency_pair_is_inversed() {
-        assertThat(moneyChanger.getSellRate(SGD, USD),
-                is(equalTo(new BigDecimal("0.7817"))));
-    }
-
-    @Test
-    public void getBuyRate_returns__inverse_bid_when_currency_pair_is_inversed() {
-        assertThat(moneyChanger.getBuyRate(SGD, USD),
-                is(equalTo(new BigDecimal("0.7820"))));
+    public void getFXRate_returns_the_inverse_rate_when_currency_pair_is_inversed() {
+        assertThat(moneyChanger.getFXRate(pair("SGD", "USD")),
+                is(equalTo(USDSGD_RATE.inverse(USDSGD_CONFIG))));
     }
 
     private final static Currency USD = Currency.getInstance("USD");
     private final static Currency SGD = Currency.getInstance("SGD");
     private final static BigDecimal USDSGD_BID = new BigDecimal("1.2787");
     private final static BigDecimal USDSGD_ASK = new BigDecimal("1.2792");
-
+    private final static CurrencyPairConfiguration USDSGD_CONFIG =
+        new CurrencyPairConfiguration(RoundingMode.HALF_UP, 4, 1);
+    private final FXRate USDSGD_RATE = new FXRate(pair("USD", "SGD"),
+            USDSGD_BID, USDSGD_ASK, 4);
     private InMemoryMoneyChanger moneyChanger;
 }
