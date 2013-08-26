@@ -14,28 +14,20 @@
  */
 package com.github.moolah;
 
-import java.math.BigDecimal;
 import java.math.RoundingMode;
+import org.junit.Test;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static com.github.moolah.TestUtils.bigdec;
 
-public class CurrencyPairConfiguration {
-    public CurrencyPairConfiguration(RoundingMode roundingMode,
-            int scale, int unit) {
-        this.roundingMode = roundingMode;
-        this.scale = scale;
-        this.unit = unit;
+public class CurrencyPairConfigurationTest {
+    @Test
+    public void doubleToBigDecimal_converts_numbers_safely() {
+        CurrencyPairConfiguration config = new CurrencyPairConfiguration(
+                RoundingMode.HALF_UP, 2, 1);
+
+        assertThat(config.doubleToBigDecimal(1 / 3.0),
+                is(equalTo(bigdec("0.33"))));
     }
-
-    public BigDecimal doubleToBigDecimal(double value) {
-        double multiplier = Math.pow(10, scale * 2);
-        double result = Math.round(value * multiplier) /multiplier;
-        return BigDecimal.valueOf(result).setScale(scale, roundingMode);
-    }
-
-    public int getUnit() {
-        return unit;
-    }
-
-    private final RoundingMode roundingMode;
-    private final int scale;
-    private final int unit;
 }
