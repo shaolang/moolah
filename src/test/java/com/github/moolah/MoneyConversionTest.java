@@ -56,6 +56,32 @@ public class MoneyConversionTest {
                 is(equalTo(sgd("-127.92"))));
     }
 
+    @Test
+    public void correctly_convert_to_currencies_with_zero_fraction_digit() {
+        context.checking(new Expectations() {{
+            allowing(moneyChanger).getFXRate(pair("USD", "JPY"));
+            will(returnValue(new FXRate(pair("USD", "JPY"), bigdec("98.60"),
+                        bigdec("98.62"), 1)));
+        }});
+
+        assertThat(
+                usd("100").convertTo(Currency.getInstance("JPY"), moneyChanger),
+                is(equalTo(new Money("JPY", "9860"))));
+    }
+
+    @Test
+    public void correctly_convert_from_currencies_with_zero_fraction_digit() {
+        context.checking(new Expectations() {{
+            allowing(moneyChanger).getFXRate(pair("JPY", "USD"));
+            will(returnValue(new FXRate(pair("JPY", "USD"), bigdec("1.0140"),
+                        bigdec("1.0142"), 100)));
+        }});
+
+        assertThat(
+                new Money("JPY", "10000").convertTo(USD, moneyChanger),
+                is(equalTo(usd("101.40"))));
+    }
+
     private final static Currency USD = Currency.getInstance("USD");
     private final static Currency SGD = Currency.getInstance("SGD");
 
