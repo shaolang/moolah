@@ -45,13 +45,13 @@ public class MoneyConversionTest {
     }
 
     @Test
-    public void uses_sell_rate_when_from_amount_is_positive() {
+    public void uses_bid_rate_when_from_amount_is_positive() {
         assertThat(usd("100").convertTo(SGD, moneyChanger),
                 is(equalTo(sgd("127.87"))));
     }
 
     @Test
-    public void uses_buy_rates_when_from_amount_is_negative() {
+    public void uses_ask_rate_when_from_amount_is_negative() {
         assertThat(usd("-100").convertTo(SGD, moneyChanger),
                 is(equalTo(sgd("-127.92"))));
     }
