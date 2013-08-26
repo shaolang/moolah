@@ -43,7 +43,7 @@ public class FXRateTest {
      */
 
     @Test
-    public void inverse_rates_using_configured_math_context() {
+    public void inverse_rates_using_currency_pair_config() {
         pairConfig = new CurrencyPairConfiguration(RoundingMode.HALF_UP, 2, 1);
 
         FXRate original = new FXRate(pair("JPY", "SGD"), bigdec("1.29"),
