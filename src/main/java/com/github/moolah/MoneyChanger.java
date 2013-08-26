@@ -20,4 +20,5 @@ import java.math.BigDecimal;
 public interface MoneyChanger {
     BigDecimal getBuyRate(Currency sell, Currency buy);
     BigDecimal getSellRate(Currency sell, Currency buy);
+    FXRate getFXRate(CurrencyPair currencyPair);
 }

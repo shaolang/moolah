@@ -15,21 +15,36 @@
 package com.github.moolah;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Currency;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static com.github.moolah.TestUtils.pair;
 
 public class InMemoryMoneyChangerTest {
     @Before
     public void setupFXRates() {
+        CurrencyPairConfiguration config = new CurrencyPairConfiguration(
+                RoundingMode.HALF_UP, 4, 1);
+        Map<CurrencyPair, CurrencyPairConfiguration> configs =
+            new HashMap<CurrencyPair, CurrencyPairConfiguration>();
+        configs.put(pair("USD", "SGD"), config);
+        configs.put(pair("SGD", "USD"), config);
+
+        moneyChanger = new InMemoryMoneyChanger(configs);
         CurrencyPair usdsgd = CurrencyPair.getInstance(USD, SGD);
 
         moneyChanger.setInverseRateFractionDigits(usdsgd, 4);
         moneyChanger.setFXRate(USD, SGD, USDSGD_BID, USDSGD_ASK);
+
+        moneyChanger.setFXRate(new FXRate(pair("USD", "SGD"), USDSGD_BID,
+                        USDSGD_ASK, 4));
     }
 
     @Test
@@ -59,5 +74,5 @@ public class InMemoryMoneyChangerTest {
     private final static BigDecimal USDSGD_BID = new BigDecimal("1.2787");
     private final static BigDecimal USDSGD_ASK = new BigDecimal("1.2792");
 
-    private InMemoryMoneyChanger moneyChanger = new InMemoryMoneyChanger();
+    private InMemoryMoneyChanger moneyChanger;
 }

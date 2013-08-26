@@ -25,6 +25,8 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static com.github.moolah.TestUtils.bigdec;
+import static com.github.moolah.TestUtils.pair;
 
 public class MoneyConversionTest {
     @Test
@@ -32,6 +34,10 @@ public class MoneyConversionTest {
         context.checking(new Expectations() {{
             allowing(mockChanger).getSellRate(USD, SGD);
             will(returnValue(bigdec("1.2787")));
+
+            allowing(mockChanger).getFXRate(pair("USD", "SGD"));
+            will(returnValue(new FXRate(pair("USD", "SGD"), bigdec("1.2787"),
+                        bigdec("1.2792"), 1)));
         }});
 
         assertThat(new Money(USD, "100").convertTo(SGD, mockChanger),
@@ -43,6 +49,10 @@ public class MoneyConversionTest {
         context.checking(new Expectations() {{
             allowing(mockChanger).getBuyRate(USD, SGD);
             will(returnValue(bigdec("1.2792")));
+
+            allowing(mockChanger).getFXRate(pair("USD", "SGD"));
+            will(returnValue(new FXRate(pair("USD", "SGD"), bigdec("1.2787"),
+                        bigdec("1.2792"), 1)));
         }});
 
         assertThat(new Money(USD, "-100").convertTo(SGD, mockChanger),

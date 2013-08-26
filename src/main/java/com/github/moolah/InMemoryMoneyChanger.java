@@ -22,6 +22,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class InMemoryMoneyChanger implements MoneyChanger {
+    public InMemoryMoneyChanger(
+            Map<CurrencyPair, CurrencyPairConfiguration> configs) {
+        this.currencyPairConfigs = configs;
+    }
+
     public BigDecimal getBuyRate(Currency from, Currency to) {
         return getRate(from, to, askRates, bidRates);
     }
@@ -30,6 +35,12 @@ public class InMemoryMoneyChanger implements MoneyChanger {
         return getRate(from, to, bidRates, askRates);
     }
 
+    public FXRate getFXRate(CurrencyPair currencyPair) {
+        return fxRates.containsKey(currencyPair)
+            ? fxRates.get(currencyPair)
+            : fxRates.get(currencyPair.inverse())
+                    .inverse(currencyPairConfigs.get(currencyPair.inverse()));
+    }
 
     private BigDecimal getRate(Currency from, Currency to,
             Map<CurrencyPair, BigDecimal> rates1,
@@ -48,12 +59,19 @@ public class InMemoryMoneyChanger implements MoneyChanger {
         askRates.put(CurrencyPair.getInstance(from, to), ask);
     }
 
+    public void setFXRate(FXRate fxRate) {
+        fxRates.put(fxRate.getCurrencyPair(), fxRate);
+    }
+
     public void setInverseRateFractionDigits(CurrencyPair pair,
             int fractionDigits) {
         inversePairMathContexts.put(pair.inverse(),
                 new MathContext(fractionDigits, RoundingMode.HALF_UP));
     }
 
+    private final Map<CurrencyPair, CurrencyPairConfiguration> currencyPairConfigs;
+    private final Map<CurrencyPair, FXRate> fxRates =
+        new HashMap<CurrencyPair, FXRate>();
     private final Map<CurrencyPair, BigDecimal> bidRates =
         new HashMap<CurrencyPair, BigDecimal>();
     private final Map<CurrencyPair, BigDecimal> askRates =

@@ -56,6 +56,21 @@ public class FXRate {
         return result;
     }
 
+    public CurrencyPair getCurrencyPair() {
+        return currencyPair;
+    }
+
+    public BigDecimal getAsk() {
+        return askRate;
+    }
+
+    public BigDecimal getBid() {
+        return bidRate;
+    }
+
+    public int getUnit() {
+        return unit;
+    }
     public String toString() {
         return new StringBuilder(currencyPair.toString())
             .append(" rate: ")

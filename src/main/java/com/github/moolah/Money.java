@@ -36,11 +36,17 @@ public class Money {
     }
 
     public Money convertTo(Currency toCurrency, MoneyChanger changer) {
+        FXRate fxRate = changer.getFXRate(CurrencyPair.getInstance(currency,
+                    toCurrency));
         BigDecimal rate = isAmountPositive()
-            ? changer.getSellRate(currency, toCurrency)
-            : changer.getBuyRate(currency, toCurrency);
+            ? fxRate.getBid()
+            : fxRate.getAsk();
 
-        return new Money(toCurrency, amount.multiply(rate));
+        double multiplier = Math.pow(10, toCurrency.getDefaultFractionDigits());
+        double result = Math.round(multiplier * amount.doubleValue()
+                * rate.doubleValue() / fxRate.getUnit()) / multiplier;
+
+        return new Money(toCurrency, BigDecimal.valueOf(result));
     }
 
     private boolean isAmountPositive() {
