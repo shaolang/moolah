@@ -33,7 +33,9 @@ public class CurrencyPairConfigurationTest {
         return Arrays.asList(new Object[][] {
             {RoundingMode.HALF_UP, 2, 1,   1 / 6.0, bigdec("0.17")},
             {RoundingMode.DOWN,    2, 1,   1 / 6.0, bigdec("0.16")},
-            {RoundingMode.HALF_UP, 4, 100, 1 / 6.0, bigdec("16.6667")}});
+            {RoundingMode.HALF_UP, 4, 100, 1 / 6.0, bigdec("16.6667")},
+            {RoundingMode.HALF_UP, 2, 100, 1 / 6.0, bigdec("16.67")},
+            {RoundingMode.HALF_UP, 0, 100, 1 / 6.0, bigdec("17")}});
     }
 
     public CurrencyPairConfigurationTest(RoundingMode roundingMode,

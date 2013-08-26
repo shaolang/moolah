@@ -26,7 +26,8 @@ public class CurrencyPairConfiguration {
     }
 
     public BigDecimal doubleToBigDecimal(double value) {
-        double multiplier = Math.pow(10, scale * 2);
+        double scaleToUse = scale > 0 ? scale : 1;
+        double multiplier = Math.pow(10, scaleToUse * 2);
         double result = Math.round(value * multiplier * unit) / multiplier;
         return BigDecimal.valueOf(result).setScale(scale, roundingMode);
     }
