@@ -14,20 +14,49 @@
  */
 package com.github.moolah;
 
+import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Arrays;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static com.github.moolah.TestUtils.bigdec;
 
+@RunWith(Parameterized.class)
 public class CurrencyPairConfigurationTest {
+    @Parameters(name="{index}: converting to {4}")
+    public static Iterable<Object[]> data() {
+        return Arrays.asList(new Object[][] {
+            {RoundingMode.HALF_UP, 2, 1,   1 / 6.0, bigdec("0.17")},
+            {RoundingMode.DOWN,    2, 1,   1 / 6.0, bigdec("0.16")},
+            {RoundingMode.HALF_UP, 4, 100, 1 / 6.0, bigdec("16.6667")}});
+    }
+
+    public CurrencyPairConfigurationTest(RoundingMode roundingMode,
+            int scale, int unit, double toConvert, BigDecimal expected) {
+        this.roundingMode = roundingMode;
+        this.scale = scale;
+        this.unit = unit;
+        this.toConvert = toConvert;
+        this.expected = expected;
+    }
+
     @Test
     public void doubleToBigDecimal_converts_numbers_safely() {
         CurrencyPairConfiguration config = new CurrencyPairConfiguration(
-                RoundingMode.HALF_UP, 2, 1);
+                roundingMode, scale, unit);
 
-        assertThat(config.doubleToBigDecimal(1 / 3.0),
-                is(equalTo(bigdec("0.33"))));
+        assertThat(config.doubleToBigDecimal(toConvert),
+                is(equalTo(expected)));
     }
+
+    private RoundingMode roundingMode;
+    private int scale;
+    private int unit;
+    private double toConvert;
+    private BigDecimal expected;
 }
