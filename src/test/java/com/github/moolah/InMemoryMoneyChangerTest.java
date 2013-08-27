@@ -30,13 +30,13 @@ import static com.github.moolah.TestUtils.pair;
 public class InMemoryMoneyChangerTest {
     @Before
     public void setupFXRates() {
-        Map<CurrencyPair, FXRateConverter> converters =
-            new HashMap<CurrencyPair, FXRateConverter>();
-        converters.put(pair("USD", "SGD"), USDSGD_CONVERTER);
-        converters.put(pair("SGD", "USD"), USDSGD_CONVERTER);
+        CurrencyPairConfiguration config = new CurrencyPairConfiguration();
+        FXRateConverter converter = FXRateConverter.DEFAULT_CONVERTER;
 
-        moneyChanger = new InMemoryMoneyChanger(converters);
-        CurrencyPair usdsgd = CurrencyPair.getInstance(USD, SGD);
+        config.putFXRateConverter(pair("SGD", "USD"), converter);
+        config.putFXRateConverter(pair("SGD", "USD"), converter);
+
+        moneyChanger = new InMemoryMoneyChanger(config);
 
         moneyChanger.setFXRate(USDSGD_RATE);
     }

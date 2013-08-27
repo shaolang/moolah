@@ -22,23 +22,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class InMemoryMoneyChanger implements MoneyChanger {
-    public InMemoryMoneyChanger(
-            Map<CurrencyPair, FXRateConverter> fxRateConverters) {
-        this.fxRateConverters = fxRateConverters;
+    public InMemoryMoneyChanger(CurrencyPairConfiguration config) {
+        this.config = config;
     }
 
     public FXRate getFXRate(CurrencyPair currencyPair) {
         return fxRates.containsKey(currencyPair)
             ? fxRates.get(currencyPair)
             : fxRates.get(currencyPair.inverse())
-                    .inverse(fxRateConverters.get(currencyPair.inverse()));
+                    .inverse(config.getFXRateConverter(currencyPair.inverse()));
     }
 
     public void setFXRate(FXRate fxRate) {
         fxRates.put(fxRate.getCurrencyPair(), fxRate);
     }
 
-    private final Map<CurrencyPair, FXRateConverter> fxRateConverters;
+    private final CurrencyPairConfiguration config;
     private final Map<CurrencyPair, FXRate> fxRates =
         new HashMap<CurrencyPair, FXRate>();
 }
