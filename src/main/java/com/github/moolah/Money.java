@@ -86,7 +86,7 @@ public class Money {
             }
         }
 
-        return new Money(currency, "" + total);
+        return new Money(currency, BigDecimal.valueOf(total));
     }
 
     public boolean equals(Object other) {

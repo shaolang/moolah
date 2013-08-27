@@ -39,8 +39,8 @@ public class MoneyTest {
 
     @Test
     public void allows_summing_monies_with_the_same_currency() {
-        assertThat(usd("100").plus(usd("10"), usd("1")),
-                is(equalTo(usd("111"))));
+        assertThat(usd("100").plus(usd("10.1"), usd("1.01")),
+                is(equalTo(usd("111.11"))));
     }
 
     @Test(expected=CurrencyMismatchException.class)
@@ -65,8 +65,8 @@ public class MoneyTest {
 
     @Test
     public void allows_minusing_monies_with_the_same_currency() {
-        assertThat(usd("100").minus(usd("10"), usd("2")),
-                is(equalTo(usd("88"))));
+        assertThat(usd("111.11").minus(usd("10.1"), usd("1.01")),
+                is(equalTo(usd("100.00"))));
     }
 
     @Test(expected=CurrencyMismatchException.class)
