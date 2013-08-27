@@ -14,8 +14,21 @@
  */
 package com.github.moolah;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CurrencyPairConfiguration {
     public FXRateConverter getFXRateConverter(CurrencyPair currencyPair) {
-        return FXRateConverter.DEFAULT_CONVERTER;
+        return converters.containsKey(currencyPair)
+            ? converters.get(currencyPair)
+            : FXRateConverter.DEFAULT_CONVERTER;
     }
+
+    public void putFXRateConverter(CurrencyPair currencyPair,
+            FXRateConverter fxRateConverter) {
+        converters.put(currencyPair, fxRateConverter);
+    }
+
+    private final Map<CurrencyPair, FXRateConverter> converters =
+        new HashMap<CurrencyPair, FXRateConverter>();
 }

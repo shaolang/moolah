@@ -14,6 +14,7 @@
  */
 package com.github.moolah;
 
+import java.math.RoundingMode;
 import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -23,9 +24,20 @@ import static com.github.moolah.TestUtils.pair;
 public class CurrencyPairConfigurationTest {
     @Test
     public void returns_the_default_fx_converter_when_one_is_not_added() {
-        CurrencyPairConfiguration config = new CurrencyPairConfiguration();
-
         assertThat(config.getFXRateConverter(pair("USD", "SGD")),
                 is(equalTo(FXRateConverter.DEFAULT_CONVERTER)));
     }
+
+    @Test
+    public void returns_the_set_fx_converter_when_set() {
+        int nonDefaultUnit = FXRateConverter.DEFAULT_CONVERTER.getUnit() * 100;
+
+        config.putFXRateConverter(pair("JPY", "SGD"),
+                new FXRateConverter(RoundingMode.HALF_UP, 2, nonDefaultUnit));
+
+        assertThat(config.getFXRateConverter(pair("JPY", "SGD")).getUnit(),
+                is(equalTo(nonDefaultUnit)));
+    }
+
+    private CurrencyPairConfiguration config = new CurrencyPairConfiguration();
 }
