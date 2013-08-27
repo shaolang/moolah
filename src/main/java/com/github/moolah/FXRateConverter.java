@@ -17,8 +17,8 @@ package com.github.moolah;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class CurrencyPairConfiguration {
-    public CurrencyPairConfiguration(RoundingMode roundingMode,
+public class FXRateConverter {
+    public FXRateConverter(RoundingMode roundingMode,
             int scale, int unit) {
         this.roundingMode = roundingMode;
         this.scale = scale;

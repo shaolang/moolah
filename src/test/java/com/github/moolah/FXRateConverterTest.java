@@ -27,7 +27,7 @@ import static org.junit.Assert.assertThat;
 import static com.github.moolah.TestUtils.bigdec;
 
 @RunWith(Parameterized.class)
-public class CurrencyPairConfigurationTest {
+public class FXRateConverterTest {
     @Parameters(name="{index}: converting to {4}")
     public static Iterable<Object[]> data() {
         return Arrays.asList(new Object[][] {
@@ -38,7 +38,7 @@ public class CurrencyPairConfigurationTest {
             {RoundingMode.HALF_UP, 0, 100, 1 / 6.0, bigdec("17")}});
     }
 
-    public CurrencyPairConfigurationTest(RoundingMode roundingMode,
+    public FXRateConverterTest(RoundingMode roundingMode,
             int scale, int unit, double toConvert, BigDecimal expected) {
         this.roundingMode = roundingMode;
         this.scale = scale;
@@ -49,10 +49,10 @@ public class CurrencyPairConfigurationTest {
 
     @Test
     public void doubleToBigDecimal_converts_numbers_safely() {
-        CurrencyPairConfiguration config = new CurrencyPairConfiguration(
+        FXRateConverter converter = new FXRateConverter(
                 roundingMode, scale, unit);
 
-        assertThat(config.doubleToBigDecimal(toConvert),
+        assertThat(converter.doubleToBigDecimal(toConvert),
                 is(equalTo(expected)));
     }
 

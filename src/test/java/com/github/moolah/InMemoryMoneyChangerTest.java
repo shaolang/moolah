@@ -30,12 +30,12 @@ import static com.github.moolah.TestUtils.pair;
 public class InMemoryMoneyChangerTest {
     @Before
     public void setupFXRates() {
-        Map<CurrencyPair, CurrencyPairConfiguration> configs =
-            new HashMap<CurrencyPair, CurrencyPairConfiguration>();
-        configs.put(pair("USD", "SGD"), USDSGD_CONFIG);
-        configs.put(pair("SGD", "USD"), USDSGD_CONFIG);
+        Map<CurrencyPair, FXRateConverter> converters =
+            new HashMap<CurrencyPair, FXRateConverter>();
+        converters.put(pair("USD", "SGD"), USDSGD_CONVERTER);
+        converters.put(pair("SGD", "USD"), USDSGD_CONVERTER);
 
-        moneyChanger = new InMemoryMoneyChanger(configs);
+        moneyChanger = new InMemoryMoneyChanger(converters);
         CurrencyPair usdsgd = CurrencyPair.getInstance(USD, SGD);
 
         moneyChanger.setFXRate(USDSGD_RATE);
@@ -50,15 +50,15 @@ public class InMemoryMoneyChangerTest {
     @Test
     public void getFXRate_returns_the_inverse_rate_when_currency_pair_is_inversed() {
         assertThat(moneyChanger.getFXRate(pair("SGD", "USD")),
-                is(equalTo(USDSGD_RATE.inverse(USDSGD_CONFIG))));
+                is(equalTo(USDSGD_RATE.inverse(USDSGD_CONVERTER))));
     }
 
     private final static Currency USD = Currency.getInstance("USD");
     private final static Currency SGD = Currency.getInstance("SGD");
     private final static BigDecimal USDSGD_BID = new BigDecimal("1.2787");
     private final static BigDecimal USDSGD_ASK = new BigDecimal("1.2792");
-    private final static CurrencyPairConfiguration USDSGD_CONFIG =
-        new CurrencyPairConfiguration(RoundingMode.HALF_UP, 4, 1);
+    private final static FXRateConverter USDSGD_CONVERTER =
+        new FXRateConverter(RoundingMode.HALF_UP, 4, 1);
     private final FXRate USDSGD_RATE = new FXRate(pair("USD", "SGD"),
             USDSGD_BID, USDSGD_ASK, 4);
     private InMemoryMoneyChanger moneyChanger;

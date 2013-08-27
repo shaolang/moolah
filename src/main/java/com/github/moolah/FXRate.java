@@ -26,11 +26,11 @@ public class FXRate {
         this.unit = unit;
     }
 
-    public FXRate inverse(CurrencyPairConfiguration pairConfig) {
+    public FXRate inverse(FXRateConverter converter) {
         return new FXRate(currencyPair.inverse(),
-                pairConfig.doubleToBigDecimal(unit / askRate.doubleValue()),
-                pairConfig.doubleToBigDecimal(unit / bidRate.doubleValue()),
-                pairConfig.getUnit());
+                converter.doubleToBigDecimal(unit / askRate.doubleValue()),
+                converter.doubleToBigDecimal(unit / bidRate.doubleValue()),
+                converter.getUnit());
     }
 
     public boolean equals(Object other) {

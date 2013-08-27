@@ -44,15 +44,15 @@ public class FXRateTest {
 
     @Test
     public void inverse_rates_using_currency_pair_config() {
-        pairConfig = new CurrencyPairConfiguration(RoundingMode.HALF_UP, 2, 1);
+        converter = new FXRateConverter(RoundingMode.HALF_UP, 2, 1);
 
         FXRate original = new FXRate(pair("JPY", "SGD"), bigdec("1.29"),
                     bigdec("1.30"), 100);
         FXRate expected = new FXRate(pair("SGD", "JPY"), bigdec("76.92"),
                             bigdec("77.52"), 1);
 
-        assertThat(original.inverse(pairConfig), is(equalTo(expected)));
+        assertThat(original.inverse(converter), is(equalTo(expected)));
     }
 
-    private CurrencyPairConfiguration pairConfig;
+    private FXRateConverter converter;
 }
