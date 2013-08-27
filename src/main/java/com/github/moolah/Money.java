@@ -53,6 +53,24 @@ public class Money {
         return amount.compareTo(BigDecimal.ZERO) >= 0;
     }
 
+    public Money minus(Money... more) {
+        if (more == null) return this;
+
+        double remainder = amount.doubleValue();
+
+        for (Money m: more) {
+            if (m != null) {
+                if (!currency.equals(m.currency)) {
+                    throw new CurrencyMismatchException();
+                }
+
+                remainder -= m.amount.doubleValue();
+            }
+        }
+
+        return new Money(currency, BigDecimal.valueOf(remainder));
+    }
+
     public Money plus(Money... more) {
         if (more == null) return this;
 

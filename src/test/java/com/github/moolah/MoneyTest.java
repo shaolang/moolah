@@ -58,4 +58,30 @@ public class MoneyTest {
         assertThat(usd("100").plus(usd("10"), null, usd("1")),
                 is(equalTo(usd("111"))));
     }
+
+    /*
+     * minus() tests
+     */
+
+    @Test
+    public void allows_minusing_monies_with_the_same_currency() {
+        assertThat(usd("100").minus(usd("10"), usd("2")),
+                is(equalTo(usd("88"))));
+    }
+
+    @Test(expected=CurrencyMismatchException.class)
+    public void throws_exception_when_trying_to_minus_monies_of_different_currency() {
+        usd("100").minus(sgd("100"));
+    }
+
+    @Test
+    public void minus_returns_itself_when_given_a_null() {
+        assertThat(usd("99").minus((Money[]) null), is(equalTo(usd("99"))));
+    }
+
+    @Test
+    public void minus_ignores_nulls() {
+        assertThat(usd("99").minus(usd("10"), null, usd("1")),
+                is(equalTo(usd("88"))));
+    }
 }
