@@ -36,6 +36,9 @@ public class FXRateConverter {
         return unit;
     }
 
+    public static final FXRateConverter DEFAULT_CONVERTER =
+        new FXRateConverter(RoundingMode.HALF_UP, 4, 1);
+
     private final RoundingMode roundingMode;
     private final int scale;
     private final int unit;
