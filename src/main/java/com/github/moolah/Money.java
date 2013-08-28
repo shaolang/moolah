@@ -16,6 +16,9 @@ package com.github.moolah;
 
 import java.math.BigDecimal;
 import java.util.Currency;
+import com.github.moolah.exchange.CurrencyPair;
+import com.github.moolah.exchange.FXRate;
+import com.github.moolah.exchange.MoneyChanger;
 
 public class Money {
     public Money(Currency currency, BigDecimal amount) {

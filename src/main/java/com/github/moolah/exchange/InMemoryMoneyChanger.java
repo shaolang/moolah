@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.ackage com.github.moolah;
  */
-package com.github.moolah;
+package com.github.moolah.exchange;
 
 import java.math.BigDecimal;
 import java.math.MathContext;

@@ -16,6 +16,7 @@ package com.github.moolah;
 
 import java.math.BigDecimal;
 import java.util.Currency;
+import com.github.moolah.exchange.CurrencyPair;
 
 public class TestUtils {
     public static BigDecimal bigdec(String number) {

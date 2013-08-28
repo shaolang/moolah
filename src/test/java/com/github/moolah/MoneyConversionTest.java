@@ -22,6 +22,8 @@ import org.jmock.lib.concurrent.Synchroniser;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import com.github.moolah.exchange.FXRate;
+import com.github.moolah.exchange.MoneyChanger;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
