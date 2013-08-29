@@ -92,6 +92,10 @@ public class Money {
         return new Money(currency, BigDecimal.valueOf(total));
     }
 
+    public Money times(int multiplier) {
+        return new Money(currency, amount.multiply(new BigDecimal(multiplier)));
+    }
+
     public boolean equals(Object other) {
         if (other == null) return false;
         if (!(other instanceof Money)) return false;

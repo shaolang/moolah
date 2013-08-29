@@ -84,4 +84,13 @@ public class MoneyTest {
         assertThat(usd("99").minus(usd("10"), null, usd("1")),
                 is(equalTo(usd("88"))));
     }
+
+    /*
+     * times() tests
+     */
+
+    @Test
+    public void times_returns_new_money_n_times_the_original() {
+        assertThat(usd("100").times(2), is(equalTo(usd("200"))));
+    }
 }
