@@ -33,6 +33,10 @@ public class FXRate {
                 converter.getUnit());
     }
 
+    public BigDecimal mid() {
+        return bidRate.add(askRate).divide(TWO);
+    }
+
     public boolean equals(Object other) {
         if (other == null) return false;
         if (!(other instanceof FXRate)) return false;
@@ -83,6 +87,7 @@ public class FXRate {
             .toString();
     }
 
+    private final static BigDecimal TWO = new BigDecimal(2);
     private final CurrencyPair currencyPair;
     private final BigDecimal bidRate;
     private final BigDecimal askRate;

@@ -54,5 +54,13 @@ public class FXRateTest {
         assertThat(original.inverse(converter), is(equalTo(expected)));
     }
 
+    @Test
+    public void mid_does_not_round_by_default() {
+        FXRate rate = new FXRate(pair("USD", "SGD"), bigdec("1.2780"),
+                bigdec("1.2781"), 1);
+
+        assertThat(rate.mid(), is(equalTo(bigdec("1.27805"))));
+    }
+
     private FXRateConverter converter;
 }
