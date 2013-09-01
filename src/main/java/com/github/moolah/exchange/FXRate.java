@@ -15,7 +15,6 @@
 package com.github.moolah.exchange;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 
 public class FXRate {
     public FXRate(CurrencyPair currencyPair, BigDecimal bidRate,
