@@ -14,9 +14,6 @@
  */
 package com.github.moolah.exchange;
 
-import java.util.Currency;
-import java.math.BigDecimal;
-
 public interface MoneyChanger {
     FXRate getFXRate(CurrencyPair currencyPair);
 }
