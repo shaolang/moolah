@@ -15,7 +15,9 @@
 package com.github.moolah;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Currency;
 import com.github.moolah.exchange.CurrencyPair;
 import com.github.moolah.exchange.FXRate;
@@ -58,15 +60,49 @@ public class Money {
     }
 
     public Iterable<Money> divideEvenly(int portions) {
-        Money[] result = new Money[portions];
-        BigDecimal divisor = new BigDecimal(portions);
-        BigDecimal quotient = amount.divide(divisor);
+        List<BigDecimal> results = newListWithZeroValues(portions);
+        BigDecimal remainder = amount;
 
-        for (int i = 0; i < portions; i++) {
-            result[i] = new Money(currency, quotient);
+        for (int i = portions; i > 0; i--) {
+            BigDecimal divisor = new BigDecimal(i);
+            BigDecimal quotient = remainder.divide(divisor, RoundingMode.DOWN);
+            remainder = remainder.subtract(quotient.multiply(new BigDecimal(i)));
+
+            addIncrementalValue(results, quotient, i);
+
+            if (remainder.equals(BigDecimal.ZERO)) {
+                break;
+            }
         }
 
-        return Arrays.asList(result);
+        return bigDecimalsToMonies(results);
+    }
+
+    private List<BigDecimal> newListWithZeroValues(int size) {
+        List<BigDecimal> newList = new ArrayList<BigDecimal>(size);
+
+        for (int i = 0; i < size; i++) {
+            newList.add(BigDecimal.ZERO);
+        }
+
+        return newList;
+    }
+
+    private void addIncrementalValue(List<BigDecimal> original,
+            BigDecimal incrementalValue, int size) {
+        for (int i = 0; i < size; i++) {
+            original.set(i, original.get(i).add(incrementalValue));
+        }
+    }
+
+    private Iterable<Money> bigDecimalsToMonies(List<BigDecimal> amounts) {
+        List<Money> monies = new ArrayList<Money>(amounts.size());
+
+        for (BigDecimal amount: amounts) {
+            monies.add(new Money(currency, amount));
+        }
+
+        return monies;
     }
 
     public Money minus(Money... more) {

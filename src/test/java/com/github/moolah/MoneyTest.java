@@ -104,4 +104,17 @@ public class MoneyTest {
         assertThat(usd("0.99").divideEvenly(3),
                 contains(usd("0.33"), usd("0.33"), usd("0.33")));
     }
+
+    @Test
+    public void divideEvely_distributes_remainder_among_portions() {
+        assertThat(usd("1").divideEvenly(3),
+                contains(usd("0.34"), usd("0.33"), usd("0.33")));
+
+        assertThat(usd("1.01").divideEvenly(3),
+                contains(usd("0.34"), usd("0.34"), usd("0.33")));
+
+        assertThat(usd("1.09").divideEvenly(5),
+                contains(usd("0.22"), usd("0.22"), usd("0.22"), usd("0.22"),
+                    usd("0.21")));
+    }
 }
