@@ -15,6 +15,7 @@
 package com.github.moolah;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Currency;
 import com.github.moolah.exchange.CurrencyPair;
 import com.github.moolah.exchange.FXRate;
@@ -54,6 +55,18 @@ public class Money {
 
     private boolean isAmountPositive() {
         return amount.compareTo(BigDecimal.ZERO) >= 0;
+    }
+
+    public Iterable<Money> divideEvenly(int portions) {
+        Money[] result = new Money[portions];
+        BigDecimal divisor = new BigDecimal(portions);
+        BigDecimal quotient = amount.divide(divisor);
+
+        for (int i = 0; i < portions; i++) {
+            result[i] = new Money(currency, quotient);
+        }
+
+        return Arrays.asList(result);
     }
 
     public Money minus(Money... more) {

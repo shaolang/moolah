@@ -21,6 +21,7 @@ import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.contains;
 import static com.github.moolah.TestUtils.adheresToValueObjectContract;
 import static com.github.moolah.TestUtils.sgd;
 import static com.github.moolah.TestUtils.usd;
@@ -92,5 +93,15 @@ public class MoneyTest {
     @Test
     public void times_returns_new_money_n_times_the_original() {
         assertThat(usd("100").times(2), is(equalTo(usd("200"))));
+    }
+
+    /*
+     * divideEvenly() tests
+     */
+
+    @Test
+    public void divideEvenly_returns_iterable_with_equal_portions() {
+        assertThat(usd("0.99").divideEvenly(3),
+                contains(usd("0.33"), usd("0.33"), usd("0.33")));
     }
 }
