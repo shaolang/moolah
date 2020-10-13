@@ -1,5 +1,8 @@
+*.swp
+.DS_Store
+.classpath
+.project
+.settings/
 /.gradle
 /build
 /target/
-*.swp
-.DS_Store
